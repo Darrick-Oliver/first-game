@@ -1,0 +1,85 @@
+[gd_scene load_steps=11 format=3 uid="uid://bg3d77xxvcg5x"]
+
+[ext_resource type="Script" path="res://src/components/car/Car.cs" id="1_b5lat"]
+[ext_resource type="Texture2D" uid="uid://i8nhnag5l3y8" path="res://src/components/car/car_turn_left_1.png" id="2_dq8ej"]
+[ext_resource type="Texture2D" uid="uid://dhnfcomqh14ns" path="res://src/components/car/car.png" id="2_dw8e4"]
+[ext_resource type="Texture2D" uid="uid://db1gs8lr4hor7" path="res://src/components/car/smoke_0.png" id="2_epwhi"]
+[ext_resource type="Texture2D" uid="uid://cs3umocib5elv" path="res://src/components/car/car_turn_right_1.png" id="3_1pgji"]
+
+[sub_resource type="Curve" id="Curve_oijc8"]
+_data = [Vector2(0.0627803, 0.992565), 0.0, 0.0, 0, 0, Vector2(0.986547, 0.0334573), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_iooba"]
+curve = SubResource("Curve_oijc8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iw16j"]
+particle_flag_disable_z = true
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(0, 1, 0)
+spread = 60.0
+initial_velocity_min = 60.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+alpha_curve = SubResource("CurveTexture_iooba")
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_db8np"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_dq8ej")
+}],
+"loop": true,
+"name": &"left_turn",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_1pgji")
+}],
+"loop": true,
+"name": &"right_turn",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_dw8e4")
+}],
+"loop": true,
+"name": &"straight",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2qpc1"]
+size = Vector2(100, 115)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(981, 540)
+script = ExtResource("1_b5lat")
+RevAcceleration = 20.0
+FrictionCoefficient = 14.0
+Radius = 300
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(16, 59)
+scale = Vector2(1, 1)
+amount = 80
+process_material = SubResource("ParticleProcessMaterial_iw16j")
+texture = ExtResource("2_epwhi")
+randomness = 0.45
+fixed_fps = 60
+trail_lifetime = 0.57
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(-4, 2)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_db8np")
+animation = &"straight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4, 2)
+shape = SubResource("RectangleShape2D_2qpc1")
