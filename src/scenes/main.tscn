@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bremskuc18q86"]
+
+[ext_resource type="PackedScene" uid="uid://bg3d77xxvcg5x" path="res://src/components/car/car_scene.tscn" id="1_mfbqh"]
+[ext_resource type="PackedScene" uid="uid://c6qwc2e6fseas" path="res://src/scenes/map.tscn" id="2_6knx5"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_mfbqh")]
+rotation = 1.5708
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+drag_bottom_margin = 1.0
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-2000, -1000)
+scale = Vector2(15, 15)
+
+[node name="Map" parent="Node2D" instance=ExtResource("2_6knx5")]
